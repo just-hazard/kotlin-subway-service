@@ -1,44 +1,34 @@
-package nextstep.subway.station.domain;
+package nextstep.subway.station.domain
 
-import nextstep.subway.BaseEntity;
-
-import javax.persistence.*;
-import java.util.Objects;
+import nextstep.subway.BaseEntity
+import nextstep.subway.station.domain.Station
+import java.util.*
+import javax.persistence.*
 
 @Entity
-public class Station extends BaseEntity {
+class Station : BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    val id: Long? = null
+
     @Column(unique = true)
-    private String name;
+    var name: String? = null
+        private set
 
-    public Station() {
+    constructor() {}
+    constructor(name: String?) {
+        this.name = name
     }
 
-    public Station(String name) {
-        this.name = name;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val station = o as Station
+        return id == station.id &&
+                name == station.name
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Station station = (Station) o;
-        return Objects.equals(id, station.id) &&
-                Objects.equals(name, station.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
+    override fun hashCode(): Int {
+        return Objects.hash(id, name)
     }
 }

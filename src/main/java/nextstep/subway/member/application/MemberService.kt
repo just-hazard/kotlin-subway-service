@@ -1,36 +1,29 @@
-package nextstep.subway.member.application;
+package nextstep.subway.member.application
 
-import nextstep.subway.member.domain.Member;
-import nextstep.subway.member.domain.MemberRepository;
-import nextstep.subway.member.dto.MemberRequest;
-import nextstep.subway.member.dto.MemberResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import nextstep.subway.member.domain.MemberRepository
+import nextstep.subway.member.dto.MemberRequest
+import nextstep.subway.member.dto.MemberResponse
+import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 
 @Service
-public class MemberService {
-    private MemberRepository memberRepository;
-
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
+class MemberService(private val memberRepository: MemberRepository) {
+    fun createMember(request: MemberRequest): MemberResponse {
+        val member = memberRepository.save(request.toMember())
+        return MemberResponse.of(member)
     }
 
-    public MemberResponse createMember(MemberRequest request) {
-        Member member = memberRepository.save(request.toMember());
-        return MemberResponse.of(member);
+    fun findMember(id: Long): MemberResponse {
+        val member = memberRepository.findById(id).orElseThrow { RuntimeException() }
+        return MemberResponse.of(member)
     }
 
-    public MemberResponse findMember(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(RuntimeException::new);
-        return MemberResponse.of(member);
+    fun updateMember(id: Long, param: MemberRequest) {
+        val member = memberRepository.findById(id).orElseThrow { RuntimeException() }
+        member.update(param.toMember())
     }
 
-    public void updateMember(Long id, MemberRequest param) {
-        Member member = memberRepository.findById(id).orElseThrow(RuntimeException::new);
-        member.update(param.toMember());
-    }
-
-    public void deleteMember(Long id) {
-        memberRepository.deleteById(id);
+    fun deleteMember(id: Long) {
+        memberRepository.deleteById(id)
     }
 }

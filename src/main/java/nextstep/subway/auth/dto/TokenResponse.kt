@@ -1,16 +1,11 @@
-package nextstep.subway.auth.dto;
+package nextstep.subway.auth.dto
 
-public class TokenResponse {
-    private String accessToken;
+class TokenResponse {
+    var accessToken: String? = null
+        private set
 
-    public TokenResponse() {
-    }
-
-    public TokenResponse(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
+    constructor() {}
+    constructor(accessToken: String?) {
+        this.accessToken = accessToken
     }
 }

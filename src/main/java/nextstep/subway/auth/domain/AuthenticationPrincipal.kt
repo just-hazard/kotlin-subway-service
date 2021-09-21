@@ -1,11 +1,5 @@
-package nextstep.subway.auth.domain;
+package nextstep.subway.auth.domain
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface AuthenticationPrincipal {
-}
+@Target(AnnotationTarget.VALUE_PARAMETER)
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+annotation class AuthenticationPrincipal

@@ -1,22 +1,14 @@
-package nextstep.subway.auth.dto;
+package nextstep.subway.auth.dto
 
-public class TokenRequest {
-    private String email;
-    private String password;
+class TokenRequest {
+    var email: String? = null
+        private set
+    var password: String? = null
+        private set
 
-    public TokenRequest() {
-    }
-
-    public TokenRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
+    constructor() {}
+    constructor(email: String?, password: String?) {
+        this.email = email
+        this.password = password
     }
 }

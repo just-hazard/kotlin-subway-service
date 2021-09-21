@@ -1,28 +1,20 @@
-package nextstep.subway.auth.infrastructure;
+package nextstep.subway.auth.infrastructure
 
-import nextstep.subway.auth.application.AuthService;
-import nextstep.subway.auth.ui.AuthenticationPrincipalArgumentResolver;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
+import nextstep.subway.auth.application.AuthService
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import nextstep.subway.auth.ui.AuthenticationPrincipalArgumentResolver
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
 
 @Configuration
-public class AuthenticationPrincipalConfig implements WebMvcConfigurer {
-    private final AuthService authService;
-
-    public AuthenticationPrincipalConfig(AuthService authService) {
-        this.authService = authService;
-    }
-
-    @Override
-    public void addArgumentResolvers(List argumentResolvers) {
-        argumentResolvers.add(createAuthenticationPrincipalArgumentResolver());
+open class AuthenticationPrincipalConfig(private val authService: AuthService) : WebMvcConfigurer {
+    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
+        argumentResolvers.add(createAuthenticationPrincipalArgumentResolver())
     }
 
     @Bean
-    public AuthenticationPrincipalArgumentResolver createAuthenticationPrincipalArgumentResolver() {
-        return new AuthenticationPrincipalArgumentResolver(authService);
+    open fun createAuthenticationPrincipalArgumentResolver(): AuthenticationPrincipalArgumentResolver {
+        return AuthenticationPrincipalArgumentResolver(authService)
     }
 }

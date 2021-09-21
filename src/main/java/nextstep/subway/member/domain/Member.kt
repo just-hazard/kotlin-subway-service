@@ -1,57 +1,41 @@
-package nextstep.subway.member.domain;
+package nextstep.subway.member.domain
 
-import nextstep.subway.BaseEntity;
-import nextstep.subway.auth.application.AuthorizationException;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import nextstep.subway.BaseEntity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import nextstep.subway.auth.application.AuthorizationException
+import org.apache.commons.lang3.StringUtils
+import javax.persistence.Entity
+import javax.persistence.Id
 
 @Entity
-public class Member extends BaseEntity {
+class Member : BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String email;
-    private String password;
-    private Integer age;
+    val id: Long? = null
+    var email: String? = null
+        private set
+    var password: String? = null
+        private set
+    var age: Int? = null
+        private set
 
-    public Member() {
+    constructor() {}
+    constructor(email: String?, password: String?, age: Int?) {
+        this.email = email
+        this.password = password
+        this.age = age
     }
 
-    public Member(String email, String password, Integer age) {
-        this.email = email;
-        this.password = password;
-        this.age = age;
+    fun update(member: Member) {
+        email = member.email
+        password = member.password
+        age = member.age
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void update(Member member) {
-        this.email = member.email;
-        this.password = member.password;
-        this.age = member.age;
-    }
-
-    public void checkPassword(String password) {
+    fun checkPassword(password: String?) {
         if (!StringUtils.equals(this.password, password)) {
-            throw new AuthorizationException();
+            throw AuthorizationException()
         }
     }
 }

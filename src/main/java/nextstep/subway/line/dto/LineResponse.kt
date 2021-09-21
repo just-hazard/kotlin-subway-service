@@ -1,56 +1,43 @@
-package nextstep.subway.line.dto;
+package nextstep.subway.line.dto
 
-import nextstep.subway.line.domain.Line;
-import nextstep.subway.station.dto.StationResponse;
+import nextstep.subway.line.domain.Line
+import nextstep.subway.station.dto.StationResponse
+import java.time.LocalDateTime
 
-import java.time.LocalDateTime;
-import java.util.List;
+class LineResponse {
+    var id: Long? = null
+        private set
+    var name: String? = null
+        private set
+    var color: String? = null
+        private set
+    var stations: List<StationResponse>? = null
+        private set
+    var createdDate: LocalDateTime? = null
+        private set
+    var modifiedDate: LocalDateTime? = null
+        private set
 
-public class LineResponse {
-    private Long id;
-    private String name;
-    private String color;
-    private List<StationResponse> stations;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
-
-    public LineResponse() {
+    constructor() {}
+    constructor(
+        id: Long?,
+        name: String?,
+        color: String?,
+        stations: List<StationResponse>?,
+        createdDate: LocalDateTime?,
+        modifiedDate: LocalDateTime?
+    ) {
+        this.id = id
+        this.name = name
+        this.color = color
+        this.stations = stations
+        this.createdDate = createdDate
+        this.modifiedDate = modifiedDate
     }
 
-    public LineResponse(Long id, String name, String color, List<StationResponse> stations, LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.stations = stations;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-    }
-
-    public static LineResponse of(Line line, List<StationResponse> stations) {
-        return new LineResponse(line.getId(), line.getName(), line.getColor(), stations, line.getCreatedDate(), line.getModifiedDate());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public List<StationResponse> getStations() {
-        return stations;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getModifiedDate() {
-        return modifiedDate;
+    companion object {
+        fun of(line: Line, stations: List<StationResponse>?): LineResponse {
+            return LineResponse(line.id, line.name, line.color, stations, line.createdDate, line.modifiedDate)
+        }
     }
 }

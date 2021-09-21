@@ -1,9 +1,8 @@
-package nextstep.subway.member.domain;
+package nextstep.subway.member.domain
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaRepository
+import java.util.*
 
-import java.util.Optional;
-
-public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByEmail(String email);
+interface MemberRepository : JpaRepository<Member?, Long?> {
+    fun findByEmail(email: String?): Optional<Member?>?
 }

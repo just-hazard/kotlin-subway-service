@@ -1,34 +1,23 @@
-package nextstep.subway.member.dto;
+package nextstep.subway.member.dto
 
-import nextstep.subway.member.domain.Member;
+import nextstep.subway.member.domain.Member
 
-public class MemberRequest {
-    private String email;
-    private String password;
-    private Integer age;
+class MemberRequest {
+    var email: String? = null
+        private set
+    var password: String? = null
+        private set
+    var age: Int? = null
+        private set
 
-    public MemberRequest() {
+    constructor() {}
+    constructor(email: String?, password: String?, age: Int?) {
+        this.email = email
+        this.password = password
+        this.age = age
     }
 
-    public MemberRequest(String email, String password, Integer age) {
-        this.email = email;
-        this.password = password;
-        this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public Member toMember() {
-        return new Member(email, password, age);
+    fun toMember(): Member {
+        return Member(email, password, age)
     }
 }

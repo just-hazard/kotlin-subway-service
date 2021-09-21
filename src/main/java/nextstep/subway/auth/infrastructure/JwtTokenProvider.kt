@@ -1,43 +1,42 @@
-package nextstep.subway.auth.infrastructure;
+package nextstep.subway.auth.infrastructure
 
-import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
+import io.jsonwebtoken.*
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
+import java.lang.IllegalArgumentException
+import java.util.*
 
 @Component
-public class JwtTokenProvider {
-    @Value("${security.jwt.token.secret-key}")
-    private String secretKey;
-    @Value("${security.jwt.token.expire-length}")
-    private long validityInMilliseconds;
+class JwtTokenProvider {
+    @Value("\${security.jwt.token.secret-key}")
+    private val secretKey: String? = null
 
-    public String createToken(String payload) {
-        Claims claims = Jwts.claims().setSubject(payload);
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-
+    @Value("\${security.jwt.token.expire-length}")
+    private val validityInMilliseconds: Long = 0
+    fun createToken(payload: String?): String {
+        val claims = Jwts.claims().setSubject(payload)
+        val now = Date()
+        val validity = Date(now.time + validityInMilliseconds)
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact()
     }
 
-    public String getPayload(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    fun getPayload(token: String?): String {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).body.subject
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+    fun validateToken(token: String?): Boolean {
+        return try {
+            val claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+            !claims.body.expiration.before(Date())
+        } catch (e: JwtException) {
+            false
+        } catch (e: IllegalArgumentException) {
+            false
         }
     }
 }
-

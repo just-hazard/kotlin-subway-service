@@ -1,45 +1,36 @@
-package nextstep.subway.station.application;
+package nextstep.subway.station.application
 
-import nextstep.subway.station.domain.Station;
-import nextstep.subway.station.domain.StationRepository;
-import nextstep.subway.station.dto.StationRequest;
-import nextstep.subway.station.dto.StationResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import nextstep.subway.station.domain.StationRepository
+import nextstep.subway.station.dto.StationRequest
+import nextstep.subway.station.dto.StationResponse
+import nextstep.subway.station.domain.Station
+import org.springframework.stereotype.Service
+import java.util.stream.Collectors
+import java.lang.RuntimeException
 
 @Service
-public class StationService {
-    private StationRepository stationRepository;
-
-    public StationService(StationRepository stationRepository) {
-        this.stationRepository = stationRepository;
+class StationService(private val stationRepository: StationRepository) {
+    fun saveStation(stationRequest: StationRequest): StationResponse {
+        val persistStation = stationRepository.save(stationRequest.toStation())
+        return StationResponse.of(persistStation)
     }
 
-    public StationResponse saveStation(StationRequest stationRequest) {
-        Station persistStation = stationRepository.save(stationRequest.toStation());
-        return StationResponse.of(persistStation);
-    }
-
-    public List<StationResponse> findAllStations() {
-        List<Station> stations = stationRepository.findAll();
-
+    fun findAllStations(): List<StationResponse> {
+        val stations = stationRepository.findAll()
         return stations.stream()
-                .map(station -> StationResponse.of(station))
-                .collect(Collectors.toList());
+            .map { station: Station? -> StationResponse.of(station) }
+            .collect(Collectors.toList())
     }
 
-    public void deleteStationById(Long id) {
-        stationRepository.deleteById(id);
+    fun deleteStationById(id: Long) {
+        stationRepository.deleteById(id)
     }
 
-    public Station findStationById(Long id) {
-        return stationRepository.findById(id).orElseThrow(RuntimeException::new);
+    fun findStationById(id: Long): Station {
+        return stationRepository.findById(id).orElseThrow { RuntimeException() }
     }
 
-    public Station findById(Long id) {
-        return stationRepository.findById(id).orElseThrow(RuntimeException::new);
+    fun findById(id: Long): Station {
+        return stationRepository.findById(id).orElseThrow { RuntimeException() }
     }
 }

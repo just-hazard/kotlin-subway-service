@@ -1,28 +1,17 @@
-package nextstep.subway.auth.domain;
+package nextstep.subway.auth.domain
 
-public class LoginMember {
-    private Long id;
-    private String email;
-    private Integer age;
+class LoginMember {
+    var id: Long? = null
+        private set
+    var email: String? = null
+        private set
+    var age: Int? = null
+        private set
 
-    public LoginMember() {
-    }
-
-    public LoginMember(Long id, String email, Integer age) {
-        this.id = id;
-        this.email = email;
-        this.age = age;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Integer getAge() {
-        return age;
+    constructor() {}
+    constructor(id: Long?, email: String?, age: Int?) {
+        this.id = id
+        this.email = email
+        this.age = age
     }
 }

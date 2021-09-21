@@ -1,34 +1,25 @@
-package nextstep.subway.member.dto;
+package nextstep.subway.member.dto
 
-import nextstep.subway.member.domain.Member;
+import nextstep.subway.member.domain.Member
 
-public class MemberResponse {
-    private Long id;
-    private String email;
-    private Integer age;
+class MemberResponse {
+    var id: Long? = null
+        private set
+    var email: String? = null
+        private set
+    var age: Int? = null
+        private set
 
-    public MemberResponse() {
+    constructor() {}
+    constructor(id: Long?, email: String?, age: Int?) {
+        this.id = id
+        this.email = email
+        this.age = age
     }
 
-    public MemberResponse(Long id, String email, Integer age) {
-        this.id = id;
-        this.email = email;
-        this.age = age;
-    }
-
-    public static MemberResponse of(Member member) {
-        return new MemberResponse(member.getId(), member.getEmail(), member.getAge());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Integer getAge() {
-        return age;
+    companion object {
+        fun of(member: Member): MemberResponse {
+            return MemberResponse(member.id, member.email, member.age)
+        }
     }
 }

@@ -1,28 +1,17 @@
-package nextstep.subway.line.dto;
+package nextstep.subway.line.dto
 
-public class SectionRequest {
-    private Long upStationId;
-    private Long downStationId;
-    private int distance;
+class SectionRequest {
+    var upStationId: Long? = null
+        private set
+    var downStationId: Long? = null
+        private set
+    var distance = 0
+        private set
 
-    public SectionRequest() {
-    }
-
-    public SectionRequest(Long upStationId, Long downStationId, int distance) {
-        this.upStationId = upStationId;
-        this.downStationId = downStationId;
-        this.distance = distance;
-    }
-
-    public Long getUpStationId() {
-        return upStationId;
-    }
-
-    public Long getDownStationId() {
-        return downStationId;
-    }
-
-    public int getDistance() {
-        return distance;
+    constructor() {}
+    constructor(upStationId: Long?, downStationId: Long?, distance: Int) {
+        this.upStationId = upStationId
+        this.downStationId = downStationId
+        this.distance = distance
     }
 }

@@ -1,221 +1,233 @@
-package nextstep.subway.line.acceptance;
+package nextstep.subway.line.acceptance
 
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import nextstep.subway.AcceptanceTest;
-import nextstep.subway.line.dto.LineRequest;
-import nextstep.subway.line.dto.LineResponse;
-import nextstep.subway.station.StationAcceptanceTest;
-import nextstep.subway.station.dto.StationResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import io.restassured.RestAssured
+import io.restassured.response.ExtractableResponse
+import io.restassured.response.Response
+import nextstep.subway.AcceptanceTest
+import nextstep.subway.line.dto.LineRequest
+import nextstep.subway.line.dto.LineResponse
+import nextstep.subway.station.StationAcceptanceTest
+import nextstep.subway.station.dto.StationResponse
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import java.util.*
+import java.util.stream.Collectors
 
 @DisplayName("지하철 노선 관련 기능")
-public class LineAcceptanceTest extends AcceptanceTest {
-    private StationResponse 강남역;
-    private StationResponse 광교역;
-    private LineRequest lineRequest1;
-    private LineRequest lineRequest2;
-
+class LineAcceptanceTest : AcceptanceTest() {
+    private lateinit var 강남역: StationResponse
+    private lateinit var 광교역: StationResponse
+    private lateinit var lineRequest1: LineRequest
+    private lateinit var lineRequest2: LineRequest
     @BeforeEach
-    public void setUp() {
-        super.setUp();
+    override fun setUp() {
+        super.setUp()
 
         // given
-        강남역 = StationAcceptanceTest.지하철역_등록되어_있음("강남역").as(StationResponse.class);
-        광교역 = StationAcceptanceTest.지하철역_등록되어_있음("광교역").as(StationResponse.class);
-
-        lineRequest1 = new LineRequest("신분당선", "bg-red-600", 강남역.getId(), 광교역.getId(), 10);
-        lineRequest2 = new LineRequest("구신분당선", "bg-red-600", 강남역.getId(), 광교역.getId(), 15);
+        강남역 = StationAcceptanceTest.지하철역_등록되어_있음("강남역").`as`(StationResponse::class.java)
+        광교역 = StationAcceptanceTest.지하철역_등록되어_있음("광교역").`as`(StationResponse::class.java)
+        lineRequest1 = LineRequest("신분당선", "bg-red-600", 강남역.id, 광교역.id, 10)
+        lineRequest2 = LineRequest("구신분당선", "bg-red-600", 강남역.id, 광교역.id, 15)
     }
 
     @DisplayName("지하철 노선을 생성한다.")
     @Test
-    void createLine() {
+    fun createLine() {
         // when
-        ExtractableResponse<Response> response = 지하철_노선_생성_요청(lineRequest1);
+        val response = 지하철_노선_생성_요청(lineRequest1)
 
         // then
-        지하철_노선_생성됨(response);
+        지하철_노선_생성됨(response)
     }
 
     @DisplayName("기존에 존재하는 지하철 노선 이름으로 지하철 노선을 생성한다.")
     @Test
-    void createLineWithDuplicateName() {
+    fun createLineWithDuplicateName() {
         // given
-        지하철_노선_등록되어_있음(lineRequest1);
+        지하철_노선_등록되어_있음(lineRequest1)
 
         // when
-        ExtractableResponse<Response> response = 지하철_노선_생성_요청(lineRequest1);
+        val response = 지하철_노선_생성_요청(lineRequest1)
 
         // then
-        지하철_노선_생성_실패됨(response);
+        지하철_노선_생성_실패됨(response)
     }
 
-    @DisplayName("지하철 노선 목록을 조회한다.")
-    @Test
-    void getLines() {
-        // given
-        ExtractableResponse<Response> createResponse1 = 지하철_노선_등록되어_있음(lineRequest1);
-        ExtractableResponse<Response> createResponse2 = 지하철_노선_등록되어_있음(lineRequest2);
+    // given
+    @get:Test
+    @get:DisplayName("지하철 노선 목록을 조회한다.")
+    val lines:
 
-        // when
-        ExtractableResponse<Response> response = 지하철_노선_목록_조회_요청();
+    // when
 
-        // then
-        지하철_노선_목록_응답됨(response);
-        지하철_노선_목록_포함됨(response, Arrays.asList(createResponse1, createResponse2));
-    }
+    // then
+            Unit
+        get() {
+            // given
+            val createResponse1 = 지하철_노선_등록되어_있음(lineRequest1)
+            val createResponse2 = 지하철_노선_등록되어_있음(lineRequest2)
 
-    @DisplayName("지하철 노선을 조회한다.")
-    @Test
-    void getLine() {
-        // given
-        ExtractableResponse<Response> createResponse = 지하철_노선_등록되어_있음(lineRequest1);
+            // when
+            val response = 지하철_노선_목록_조회_요청()
 
-        // when
-        ExtractableResponse<Response> response = 지하철_노선_목록_조회_요청(createResponse);
+            // then
+            지하철_노선_목록_응답됨(response)
+            지하철_노선_목록_포함됨(response, Arrays.asList(createResponse1, createResponse2))
+        }
 
-        // then
-        지하철_노선_응답됨(response, createResponse);
-    }
+    // given
+    @get:Test
+    @get:DisplayName("지하철 노선을 조회한다.")
+    val line:
+
+    // when
+
+    // then
+            Unit
+        get() {
+            // given
+            val createResponse = 지하철_노선_등록되어_있음(lineRequest1)
+
+            // when
+            val response = 지하철_노선_목록_조회_요청(createResponse)
+
+            // then
+            지하철_노선_응답됨(response, createResponse)
+        }
 
     @DisplayName("지하철 노선을 수정한다.")
     @Test
-    void updateLine() {
+    fun updateLine() {
         // given
-        String name = "신분당선";
-        ExtractableResponse<Response> createResponse = 지하철_노선_등록되어_있음(lineRequest1);
+        val name = "신분당선"
+        val createResponse = 지하철_노선_등록되어_있음(lineRequest1)
 
         // when
-        ExtractableResponse<Response> response = 지하철_노선_수정_요청(createResponse, lineRequest2);
+        val response = 지하철_노선_수정_요청(createResponse, lineRequest2)
 
         // then
-        지하철_노선_수정됨(response);
+        지하철_노선_수정됨(response)
     }
 
     @DisplayName("지하철 노선을 제거한다.")
     @Test
-    void deleteLine() {
+    fun deleteLine() {
         // given
-        ExtractableResponse<Response> createResponse = 지하철_노선_등록되어_있음(lineRequest1);
+        val createResponse = 지하철_노선_등록되어_있음(lineRequest1)
 
         // when
-        ExtractableResponse<Response> response = 지하철_노선_제거_요청(createResponse);
+        val response = 지하철_노선_제거_요청(createResponse)
 
         // then
-        지하철_노선_삭제됨(response);
+        지하철_노선_삭제됨(response)
     }
 
-    public static ExtractableResponse<Response> 지하철_노선_등록되어_있음(LineRequest params) {
-        return 지하철_노선_생성_요청(params);
-    }
+    companion object {
+        @JvmStatic
+        fun 지하철_노선_등록되어_있음(params: LineRequest?): ExtractableResponse<Response> {
+            return 지하철_노선_생성_요청(params)
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_생성_요청(LineRequest params) {
-        return RestAssured
+        fun 지하철_노선_생성_요청(params: LineRequest?): ExtractableResponse<Response> {
+            return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().post("/lines")
-                .then().log().all().
-                        extract();
-    }
+                .`when`().post("/lines")
+                .then().log().all().extract()
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_목록_조회_요청() {
-        return 지하철_노선_목록_조회_요청("/lines");
-    }
+        fun 지하철_노선_목록_조회_요청(): ExtractableResponse<Response> {
+            return 지하철_노선_목록_조회_요청("/lines")
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_목록_조회_요청(ExtractableResponse<Response> response) {
-        String uri = response.header("Location");
+        fun 지하철_노선_목록_조회_요청(response: ExtractableResponse<Response>): ExtractableResponse<Response> {
+            val uri = response.header("Location")
+            return 지하철_노선_목록_조회_요청(uri)
+        }
 
-        return 지하철_노선_목록_조회_요청(uri);
-    }
-
-    private static ExtractableResponse<Response> 지하철_노선_목록_조회_요청(String uri) {
-        return RestAssured
+        private fun 지하철_노선_목록_조회_요청(uri: String): ExtractableResponse<Response> {
+            return RestAssured
                 .given().log().all()
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get(uri)
+                .`when`()[uri]
                 .then().log().all()
-                .extract();
-    }
+                .extract()
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_조회_요청(LineResponse response) {
-        return RestAssured
+        @JvmStatic
+        fun 지하철_노선_조회_요청(response: LineResponse): ExtractableResponse<Response> {
+            return RestAssured
                 .given().log().all()
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/lines/{lineId}", response.getId())
+                .`when`()["/lines/{lineId}", response.id]
                 .then().log().all()
-                .extract();
-    }
+                .extract()
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_수정_요청(ExtractableResponse<Response> response, LineRequest params) {
-        String uri = response.header("Location");
-
-        return RestAssured
+        fun 지하철_노선_수정_요청(response: ExtractableResponse<Response>, params: LineRequest?): ExtractableResponse<Response> {
+            val uri = response.header("Location")
+            return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().put(uri)
+                .`when`().put(uri)
                 .then().log().all()
-                .extract();
-    }
+                .extract()
+        }
 
-    public static ExtractableResponse<Response> 지하철_노선_제거_요청(ExtractableResponse<Response> response) {
-        String uri = response.header("Location");
-
-        return RestAssured
+        fun 지하철_노선_제거_요청(response: ExtractableResponse<Response>): ExtractableResponse<Response> {
+            val uri = response.header("Location")
+            return RestAssured
                 .given().log().all()
-                .when().delete(uri)
+                .`when`().delete(uri)
                 .then().log().all()
-                .extract();
-    }
+                .extract()
+        }
 
-    public static void 지하철_노선_생성됨(ExtractableResponse response) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.header("Location")).isNotBlank();
-    }
+        fun 지하철_노선_생성됨(response: ExtractableResponse<*>) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+            Assertions.assertThat(response.header("Location")).isNotBlank
+        }
 
-    public static void 지하철_노선_생성_실패됨(ExtractableResponse<Response> response) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
+        fun 지하철_노선_생성_실패됨(response: ExtractableResponse<Response>) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value())
+        }
 
-    public static void 지하철_노선_목록_응답됨(ExtractableResponse<Response> response) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
+        fun 지하철_노선_목록_응답됨(response: ExtractableResponse<Response>) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+        }
 
-    public static void 지하철_노선_응답됨(ExtractableResponse<Response> response, ExtractableResponse<Response> createdResponse) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.as(LineResponse.class)).isNotNull();
-    }
+        fun 지하철_노선_응답됨(response: ExtractableResponse<Response>, createdResponse: ExtractableResponse<Response>?) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+            Assertions.assertThat(response.`as`(LineResponse::class.java)).isNotNull
+        }
 
-    public static void 지하철_노선_목록_포함됨(ExtractableResponse<Response> response, List<ExtractableResponse<Response>> createdResponses) {
-        List<Long> expectedLineIds = createdResponses.stream()
-                .map(it -> Long.parseLong(it.header("Location").split("/")[2]))
-                .collect(Collectors.toList());
+        fun 지하철_노선_목록_포함됨(
+            response: ExtractableResponse<Response>,
+            createdResponses: List<ExtractableResponse<Response>>
+        ) {
+            val expectedLineIds = createdResponses.stream()
+                .map { it: ExtractableResponse<Response> ->
+                    it.header("Location").split("/").toTypedArray()[2].toLong()
+                }
+                .collect(Collectors.toList())
+            val resultLineIds = response.jsonPath().getList(".", LineResponse::class.java).stream()
+                .map(LineResponse::id)
+                .collect(Collectors.toList())
+            Assertions.assertThat(resultLineIds).containsAll(expectedLineIds)
+        }
 
-        List<Long> resultLineIds = response.jsonPath().getList(".", LineResponse.class).stream()
-                .map(LineResponse::getId)
-                .collect(Collectors.toList());
+        fun 지하철_노선_수정됨(response: ExtractableResponse<Response>) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+        }
 
-        assertThat(resultLineIds).containsAll(expectedLineIds);
-    }
-
-    public static void 지하철_노선_수정됨(ExtractableResponse<Response> response) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    public static void 지하철_노선_삭제됨(ExtractableResponse<Response> response) {
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        fun 지하철_노선_삭제됨(response: ExtractableResponse<Response>) {
+            Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value())
+        }
     }
 }

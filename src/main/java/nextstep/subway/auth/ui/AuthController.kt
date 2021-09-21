@@ -1,24 +1,18 @@
-package nextstep.subway.auth.ui;
+package nextstep.subway.auth.ui
 
-import nextstep.subway.auth.application.AuthService;
-import nextstep.subway.auth.dto.TokenRequest;
-import nextstep.subway.auth.dto.TokenResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController
+import nextstep.subway.auth.application.AuthService
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import nextstep.subway.auth.dto.TokenRequest
+import org.springframework.http.ResponseEntity
+import nextstep.subway.auth.dto.TokenResponse
 
 @RestController
-public class AuthController {
-    private AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
+class AuthController(private val authService: AuthService) {
     @PostMapping("/login/token")
-    public ResponseEntity<TokenResponse> login(@RequestBody TokenRequest request) {
-        TokenResponse token = authService.login(request);
-        return ResponseEntity.ok().body(token);
+    fun login(@RequestBody request: TokenRequest?): ResponseEntity<TokenResponse> {
+        val token = authService.login(request!!)
+        return ResponseEntity.ok().body(token)
     }
 }

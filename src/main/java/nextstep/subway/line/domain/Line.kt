@@ -1,56 +1,43 @@
-package nextstep.subway.line.domain;
+package nextstep.subway.line.domain
 
-import nextstep.subway.BaseEntity;
-import nextstep.subway.station.domain.Station;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import nextstep.subway.BaseEntity
+import nextstep.subway.station.domain.Station
+import java.util.ArrayList
+import javax.persistence.*
 
 @Entity
-public class Line extends BaseEntity {
+class Line : BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    val id: Long? = null
+
     @Column(unique = true)
-    private String name;
-    private String color;
+    var name: String? = null
+        private set
+    var color: String? = null
+        private set
 
-    @OneToMany(mappedBy = "line", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<Section> sections = new ArrayList<>();
+    @OneToMany(mappedBy = "line", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
+    private val sections: MutableList<Section> = ArrayList()
 
-    public Line() {
+    constructor() {}
+    constructor(name: String?, color: String?) {
+        this.name = name
+        this.color = color
     }
 
-    public Line(String name, String color) {
-        this.name = name;
-        this.color = color;
+    constructor(name: String?, color: String?, upStation: Station?, downStation: Station?, distance: Int) {
+        this.name = name
+        this.color = color
+        sections.add(Section(this, upStation, downStation, distance))
     }
 
-    public Line(String name, String color, Station upStation, Station downStation, int distance) {
-        this.name = name;
-        this.color = color;
-        sections.add(new Section(this, upStation, downStation, distance));
+    fun update(line: Line) {
+        name = line.name
+        color = line.color
     }
 
-    public void update(Line line) {
-        this.name = line.getName();
-        this.color = line.getColor();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public List<Section> getSections() {
-        return sections;
+    fun getSections(): List<Section> {
+        return sections
     }
 }

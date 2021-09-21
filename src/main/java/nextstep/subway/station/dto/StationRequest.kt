@@ -1,22 +1,17 @@
-package nextstep.subway.station.dto;
+package nextstep.subway.station.dto
 
-import nextstep.subway.station.domain.Station;
+import nextstep.subway.station.domain.Station
 
-public class StationRequest {
-    private String name;
+class StationRequest {
+    var name: String? = null
+        private set
 
-    public StationRequest() {
+    constructor() {}
+    constructor(name: String?) {
+        this.name = name
     }
 
-    public StationRequest(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Station toStation() {
-        return new Station(name);
+    fun toStation(): Station {
+        return Station(name)
     }
 }
