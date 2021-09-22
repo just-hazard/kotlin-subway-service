@@ -36,7 +36,7 @@ class LineResponse {
     }
 
     companion object {
-        fun of(line: Line, stations: List<StationResponse>?): LineResponse {
+        fun of(line: Line, stations: List<StationResponse>): LineResponse {
             return LineResponse(line.id, line.name, line.color, stations, line.createdDate, line.modifiedDate)
         }
     }

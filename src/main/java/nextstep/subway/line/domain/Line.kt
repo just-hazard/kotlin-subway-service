@@ -6,30 +6,32 @@ import java.util.ArrayList
 import javax.persistence.*
 
 @Entity
-class Line : BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
-
+class Line(
     @Column(unique = true)
-    var name: String? = null
-        private set
-    var color: String? = null
-        private set
+    var name: String,
+
+    var color: String,
 
     @OneToMany(mappedBy = "line", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-    private val sections: MutableList<Section> = ArrayList()
+    val sections: ArrayList<Section> = ArrayList<Section>()
 
-    constructor() {}
-    constructor(name: String?, color: String?) {
-        this.name = name
-        this.color = color
-    }
+) : BaseEntity() {
 
-    constructor(name: String?, color: String?, upStation: Station?, downStation: Station?, distance: Int) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
+
+    constructor(name: String, color: String, upStation: Station, downStation: Station, distance: Int) : this(name, color,
+        ArrayList<Section>()) {
         this.name = name
         this.color = color
         sections.add(Section(this, upStation, downStation, distance))
+    }
+
+    constructor(name: String, color: String): this(name, color,
+        ArrayList<Section>()) {
+        this.name = name
+        this.color = color
     }
 
     fun update(line: Line) {

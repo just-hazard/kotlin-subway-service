@@ -2,4 +2,4 @@ package nextstep.subway.line.domain
 
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface LineRepository : JpaRepository<Line?, Long?>
+interface LineRepository : JpaRepository<Line, Long>

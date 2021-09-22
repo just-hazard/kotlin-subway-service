@@ -24,7 +24,7 @@ open class LineService(private val lineRepository: LineRepository, private val s
         val persistLine =
             lineRepository.save(Line(request.name, request.color, upStation, downStation, request.distance))
         val stations = getStations(persistLine).stream()
-            .map { it: Station? -> StationResponse.of(it) }
+            .map { StationResponse.of(it) }
             .collect(Collectors.toList())
         return LineResponse.of(persistLine, stations)
     }
@@ -32,9 +32,9 @@ open class LineService(private val lineRepository: LineRepository, private val s
     fun findLines(): List<LineResponse> {
         val persistLines = lineRepository.findAll()
         return persistLines.stream()
-            .map { line: Line ->
+            .map { line ->
                 val stations = getStations(line).stream()
-                    .map { it: Station? -> StationResponse.of(it) }
+                    .map { StationResponse.of(it) }
                     .collect(Collectors.toList())
                 LineResponse.of(line, stations)
             }
@@ -48,7 +48,7 @@ open class LineService(private val lineRepository: LineRepository, private val s
     fun findLineResponseById(id: Long): LineResponse {
         val persistLine = findLineById(id)
         val stations = getStations(persistLine).stream()
-            .map { it: Station? -> StationResponse.of(it) }
+            .map { StationResponse.of(it) }
             .collect(Collectors.toList())
         return LineResponse.of(persistLine, stations)
     }
@@ -67,13 +67,13 @@ open class LineService(private val lineRepository: LineRepository, private val s
         val upStation = stationService.findStationById(request.upStationId)
         val downStation = stationService.findStationById(request.downStationId)
         val stations = getStations(line)
-        val isUpStationExisted = stations.stream().anyMatch { it: Station? -> it === upStation }
-        val isDownStationExisted = stations.stream().anyMatch { it: Station? -> it === downStation }
+        val isUpStationExisted = stations.stream().anyMatch { it === upStation }
+        val isDownStationExisted = stations.stream().anyMatch { it === downStation }
         if (isUpStationExisted && isDownStationExisted) {
             throw RuntimeException("이미 등록된 구간 입니다.")
         }
-        if (!stations.isEmpty() && stations.stream().noneMatch { it: Station? -> it === upStation } &&
-            stations.stream().noneMatch { it: Station? -> it === downStation }) {
+        if (!stations.isEmpty() && stations.stream().noneMatch { it === upStation } &&
+            stations.stream().noneMatch { it === downStation }) {
             throw RuntimeException("등록할 수 없는 구간 입니다.")
         }
         if (stations.isEmpty()) {
@@ -82,22 +82,22 @@ open class LineService(private val lineRepository: LineRepository, private val s
         }
         if (isUpStationExisted) {
             line.sections.stream()
-                .filter { it: Section -> it.upStation === upStation }
+                .filter { it.upStation === upStation }
                 .findFirst()
-                .ifPresent { it: Section -> it.updateUpStation(downStation, request.distance) }
+                .ifPresent { it.updateUpStation(downStation, request.distance) }
             line.sections.add(Section(line, upStation, downStation, request.distance))
         } else if (isDownStationExisted) {
             line.sections.stream()
-                .filter { it: Section -> it.downStation === downStation }
+                .filter { it.downStation === downStation }
                 .findFirst()
-                .ifPresent { it: Section -> it.updateDownStation(upStation, request.distance) }
+                .ifPresent { it.updateDownStation(upStation, request.distance) }
             line.sections.add(Section(line, upStation, downStation, request.distance))
         } else {
             throw RuntimeException()
         }
     }
 
-    fun removeLineStation(lineId: Long, stationId: Long?) {
+    fun removeLineStation(lineId: Long, stationId: Long) {
         val line = findLineById(lineId)
         val station = stationService.findStationById(stationId)
         if (line.sections.size <= 1) {
@@ -115,21 +115,21 @@ open class LineService(private val lineRepository: LineRepository, private val s
             val newDistance = upLineStation.get().distance + downLineStation.get().distance
             line.sections.add(Section(line, newUpStation, newDownStation, newDistance))
         }
-        upLineStation.ifPresent { it: Section? -> line.sections.remove(it) }
-        downLineStation.ifPresent { it: Section? -> line.sections.remove(it) }
+        upLineStation.ifPresent { line.sections.remove(it) }
+        downLineStation.ifPresent { line.sections.remove(it) }
     }
 
-    fun getStations(line: Line): List<Station?> {
+    fun getStations(line: Line): List<Station> {
         if (line.sections.isEmpty()) {
             return Arrays.asList()
         }
-        val stations: MutableList<Station?> = ArrayList()
+        val stations: MutableList<Station> = ArrayList()
         var downStation = findUpStation(line)
         stations.add(downStation)
         while (downStation != null) {
             val finalDownStation: Station = downStation
             val nextLineStation = line.sections.stream()
-                .filter { it: Section -> it.upStation === finalDownStation }
+                .filter { it.upStation === finalDownStation }
                 .findFirst()
             if (!nextLineStation.isPresent) {
                 break
@@ -140,12 +140,12 @@ open class LineService(private val lineRepository: LineRepository, private val s
         return stations
     }
 
-    private fun findUpStation(line: Line): Station? {
+    private fun findUpStation(line: Line): Station {
         var downStation = line.sections[0].upStation
         while (downStation != null) {
             val finalDownStation = downStation
             val nextLineStation = line.sections.stream()
-                .filter { it: Section -> it.downStation === finalDownStation }
+                .filter { it.downStation === finalDownStation }
                 .findFirst()
             if (!nextLineStation.isPresent) {
                 break

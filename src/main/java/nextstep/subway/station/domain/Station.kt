@@ -6,19 +6,15 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Station : BaseEntity {
+class Station(
+    @Column(unique = true)
+    var name: String,
+) : BaseEntity() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    val id: Long = 0
 
-    @Column(unique = true)
-    var name: String? = null
-        private set
-
-    constructor() {}
-    constructor(name: String?) {
-        this.name = name
-    }
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true

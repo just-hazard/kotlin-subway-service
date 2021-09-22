@@ -18,7 +18,7 @@ class StationService(private val stationRepository: StationRepository) {
     fun findAllStations(): List<StationResponse> {
         val stations = stationRepository.findAll()
         return stations.stream()
-            .map { station: Station? -> StationResponse.of(station) }
+            .map { station: Station -> StationResponse.of(station) }
             .collect(Collectors.toList())
     }
 
