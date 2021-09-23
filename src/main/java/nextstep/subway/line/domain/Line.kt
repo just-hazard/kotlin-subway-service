@@ -13,10 +13,9 @@ class Line(
     var color: String,
 
     @OneToMany(mappedBy = "line", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-    val sections: ArrayList<Section> = ArrayList<Section>()
+    private val sections: MutableList<Section> = Section(mutableListOf<Section>())
 
 ) : BaseEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

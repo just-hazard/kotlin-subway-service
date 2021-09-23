@@ -20,6 +20,7 @@ class Section(
 
     var distance: Int
 ) {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0

@@ -13,7 +13,6 @@ class StationResponse {
     var modifiedDate: LocalDateTime? = null
         private set
 
-    constructor() {}
     constructor(id: Long?, name: String?, createdDate: LocalDateTime?, modifiedDate: LocalDateTime?) {
         this.id = id
         this.name = name
