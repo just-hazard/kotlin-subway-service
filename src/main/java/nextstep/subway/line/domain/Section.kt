@@ -8,17 +8,17 @@ import javax.persistence.*
 class Section(
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "line_id")
-    var line: Line,
+    var line: Line = Line(),
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "up_station_id")
-    var upStation: Station,
+    var upStation: Station = Station(),
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "down_station_id")
-    var downStation: Station,
+    var downStation: Station = Station(),
 
-    var distance: Int
+    var distance: Int = 0
 ) {
 
     @Id

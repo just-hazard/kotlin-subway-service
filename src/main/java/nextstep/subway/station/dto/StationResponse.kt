@@ -4,16 +4,16 @@ import nextstep.subway.station.domain.Station
 import java.time.LocalDateTime
 
 class StationResponse {
-    var id: Long? = null
+    var id: Long
         private set
-    var name: String? = null
+    var name: String
         private set
-    var createdDate: LocalDateTime? = null
+    var createdDate: LocalDateTime
         private set
-    var modifiedDate: LocalDateTime? = null
+    var modifiedDate: LocalDateTime
         private set
 
-    constructor(id: Long?, name: String?, createdDate: LocalDateTime?, modifiedDate: LocalDateTime?) {
+    constructor(id: Long, name: String, createdDate: LocalDateTime, modifiedDate: LocalDateTime) {
         this.id = id
         this.name = name
         this.createdDate = createdDate

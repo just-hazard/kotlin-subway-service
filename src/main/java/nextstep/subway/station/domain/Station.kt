@@ -8,7 +8,7 @@ import javax.persistence.*
 @Entity
 class Station(
     @Column(unique = true)
-    var name: String
+    var name: String = ""
 ) : BaseEntity() {
 
     @Id

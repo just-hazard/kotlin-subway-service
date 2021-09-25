@@ -111,12 +111,12 @@ class LineSectionAcceptanceTest : AcceptanceTest() {
 
     companion object {
         fun 지하철_노선에_지하철역_등록_요청(
-            line: LineResponse?,
-            upStation: StationResponse?,
-            downStation: StationResponse?,
+            line: LineResponse,
+            upStation: StationResponse,
+            downStation: StationResponse,
             distance: Int
         ): ExtractableResponse<Response> {
-            val sectionRequest = SectionRequest(upStation!!.id, downStation!!.id, distance)
+            val sectionRequest = SectionRequest(upStation.id, downStation!!.id, distance)
             return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

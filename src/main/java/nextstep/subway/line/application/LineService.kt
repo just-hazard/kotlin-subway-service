@@ -77,21 +77,21 @@ open class LineService(private val lineRepository: LineRepository, private val s
             throw RuntimeException("등록할 수 없는 구간 입니다.")
         }
         if (stations.isEmpty()) {
-            line.sections.add(Section(line, upStation, downStation, request.distance))
+            line.getSections().add(Section(line, upStation, downStation, request.distance))
             return
         }
         if (isUpStationExisted) {
-            line.sections.stream()
+            line.getSections().stream()
                 .filter { it.upStation === upStation }
                 .findFirst()
                 .ifPresent { it.updateUpStation(downStation, request.distance) }
-            line.sections.add(Section(line, upStation, downStation, request.distance))
+            line.getSections().add(Section(line, upStation, downStation, request.distance))
         } else if (isDownStationExisted) {
-            line.sections.stream()
+            line.getSections().stream()
                 .filter { it.downStation === downStation }
                 .findFirst()
                 .ifPresent { it.updateDownStation(upStation, request.distance) }
-            line.sections.add(Section(line, upStation, downStation, request.distance))
+            line.getSections().add(Section(line, upStation, downStation, request.distance))
         } else {
             throw RuntimeException()
         }
@@ -100,27 +100,27 @@ open class LineService(private val lineRepository: LineRepository, private val s
     fun removeLineStation(lineId: Long, stationId: Long) {
         val line = findLineById(lineId)
         val station = stationService.findStationById(stationId)
-        if (line.sections.size <= 1) {
+        if (line.getSections().size <= 1) {
             throw RuntimeException()
         }
-        val upLineStation = line.sections.stream()
+        val upLineStation = line.getSections().stream()
             .filter { it: Section -> it.upStation === station }
             .findFirst()
-        val downLineStation = line.sections.stream()
+        val downLineStation = line.getSections().stream()
             .filter { it: Section -> it.downStation === station }
             .findFirst()
         if (upLineStation.isPresent && downLineStation.isPresent) {
             val newUpStation = downLineStation.get().upStation
             val newDownStation = upLineStation.get().downStation
             val newDistance = upLineStation.get().distance + downLineStation.get().distance
-            line.sections.add(Section(line, newUpStation, newDownStation, newDistance))
+            line.getSections().add(Section(line, newUpStation, newDownStation, newDistance))
         }
-        upLineStation.ifPresent { line.sections.remove(it) }
-        downLineStation.ifPresent { line.sections.remove(it) }
+        upLineStation.ifPresent { line.getSections().remove(it) }
+        downLineStation.ifPresent { line.getSections().remove(it) }
     }
 
     fun getStations(line: Line): List<Station> {
-        if (line.sections.isEmpty()) {
+        if (line.getSections().isEmpty()) {
             return Arrays.asList()
         }
         val stations: MutableList<Station> = ArrayList()
@@ -128,7 +128,7 @@ open class LineService(private val lineRepository: LineRepository, private val s
         stations.add(downStation)
         while (downStation != null) {
             val finalDownStation: Station = downStation
-            val nextLineStation = line.sections.stream()
+            val nextLineStation = line.getSections().stream()
                 .filter { it.upStation === finalDownStation }
                 .findFirst()
             if (!nextLineStation.isPresent) {
@@ -141,10 +141,10 @@ open class LineService(private val lineRepository: LineRepository, private val s
     }
 
     private fun findUpStation(line: Line): Station {
-        var downStation = line.sections[0].upStation
+        var downStation = line.getSections()[0].upStation
         while (downStation != null) {
             val finalDownStation = downStation
-            val nextLineStation = line.sections.stream()
+            val nextLineStation = line.getSections().stream()
                 .filter { it.downStation === finalDownStation }
                 .findFirst()
             if (!nextLineStation.isPresent) {

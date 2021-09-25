@@ -8,12 +8,12 @@ import javax.persistence.*
 @Entity
 class Line(
     @Column(unique = true)
-    var name: String,
+    var name: String = "",
 
-    var color: String,
+    var color: String = "",
 
     @OneToMany(mappedBy = "line", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
-    private val sections: MutableList<Section> = Section(mutableListOf<Section>())
+    private var sections: MutableList<Section> = mutableListOf()
 
 ) : BaseEntity() {
     @Id
@@ -38,7 +38,7 @@ class Line(
         color = line.color
     }
 
-    fun getSections(): List<Section> {
+    fun getSections(): MutableList<Section> {
         return sections
     }
 }
