@@ -116,7 +116,7 @@ class LineSectionAcceptanceTest : AcceptanceTest() {
             downStation: StationResponse,
             distance: Int
         ): ExtractableResponse<Response> {
-            val sectionRequest = SectionRequest(upStation.id, downStation!!.id, distance)
+            val sectionRequest = SectionRequest(upStation.id, downStation.id, distance)
             return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

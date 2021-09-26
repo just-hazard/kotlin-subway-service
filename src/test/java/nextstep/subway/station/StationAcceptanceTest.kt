@@ -78,11 +78,11 @@ class StationAcceptanceTest : AcceptanceTest() {
     companion object {
         private const val 강남역 = "강남역"
         private const val 역삼역 = "역삼역"
-        fun 지하철역_등록되어_있음(name: String?): ExtractableResponse<Response> {
+        fun 지하철역_등록되어_있음(name: String): ExtractableResponse<Response> {
             return 지하철역_생성_요청(name)
         }
 
-        fun 지하철역_생성_요청(name: String?): ExtractableResponse<Response> {
+        fun 지하철역_생성_요청(name: String): ExtractableResponse<Response> {
             val stationRequest = StationRequest(name)
             return RestAssured
                 .given().log().all()

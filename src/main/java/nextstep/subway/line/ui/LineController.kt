@@ -47,7 +47,7 @@ class LineController(private val lineService: LineService) {
     }
 
     @DeleteMapping("/{lineId}/sections")
-    fun removeLineStation(@PathVariable lineId: Long?, @RequestParam stationId: Long?): ResponseEntity<*> {
+    fun removeLineStation(@PathVariable lineId: Long?, @RequestParam stationId: Long): ResponseEntity<*> {
         lineService.removeLineStation(lineId!!, stationId)
         return ResponseEntity.ok().build<Any>()
     }

@@ -18,7 +18,6 @@ class LineResponse {
     var modifiedDate: LocalDateTime? = null
         private set
 
-    constructor() {}
     constructor(
         id: Long?,
         name: String?,

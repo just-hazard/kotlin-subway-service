@@ -3,11 +3,10 @@ package nextstep.subway.station.dto
 import nextstep.subway.station.domain.Station
 
 class StationRequest {
-    var name: String? = null
+    var name: String
         private set
 
-    constructor() {}
-    constructor(name: String?) {
+    constructor(name: String) {
         this.name = name
     }
 
