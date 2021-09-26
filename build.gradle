@@ -32,6 +32,10 @@ dependencies {
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+	// kotlin
+	// https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
+	runtimeOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.31'
+
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
