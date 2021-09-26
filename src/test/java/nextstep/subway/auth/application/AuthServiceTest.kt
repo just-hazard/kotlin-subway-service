@@ -1,47 +1,45 @@
-package nextstep.subway.auth.application;
+package nextstep.subway.auth.application
 
-import nextstep.subway.member.domain.Member;
-import nextstep.subway.member.domain.MemberRepository;
-import nextstep.subway.auth.dto.TokenRequest;
-import nextstep.subway.auth.dto.TokenResponse;
-import nextstep.subway.auth.infrastructure.JwtTokenProvider;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import nextstep.subway.auth.dto.TokenRequest
+import nextstep.subway.auth.infrastructure.JwtTokenProvider
+import nextstep.subway.member.domain.Member
+import nextstep.subway.member.domain.MemberRepository
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
-@ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
-    public static final String EMAIL = "email@email.com";
-    public static final String PASSWORD = "password";
-    public static final int AGE = 10;
-
-    private AuthService authService;
+@ExtendWith(MockitoExtension::class)
+class AuthServiceTest {
+    private var authService: AuthService? = null
 
     @Mock
-    private MemberRepository memberRepository;
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
+    private val memberRepository: MemberRepository? = null
 
+    @Mock
+    private val jwtTokenProvider: JwtTokenProvider? = null
     @BeforeEach
-    void setUp() {
-        authService = new AuthService(memberRepository, jwtTokenProvider);
+    fun setUp() {
+        authService = AuthService(memberRepository!!, jwtTokenProvider!!)
     }
 
     @Test
-    void login() {
-        when(memberRepository.findByEmail(anyString())).thenReturn(Optional.of(new Member(EMAIL, PASSWORD, AGE)));
-        when(jwtTokenProvider.createToken(anyString())).thenReturn("TOKEN");
+    fun login() {
+        Mockito.`when`(memberRepository!!.findByEmail(ArgumentMatchers.anyString()))
+            .thenReturn(Optional.of(Member(EMAIL, PASSWORD, AGE)))
+        Mockito.`when`(jwtTokenProvider!!.createToken(ArgumentMatchers.anyString())).thenReturn("TOKEN")
+        val token = authService!!.login(TokenRequest(EMAIL, PASSWORD))
+        Assertions.assertThat(token.accessToken).isNotBlank
+    }
 
-        TokenResponse token = authService.login(new TokenRequest(EMAIL, PASSWORD));
-
-        assertThat(token.getAccessToken()).isNotBlank();
+    companion object {
+        const val EMAIL = "email@email.com"
+        const val PASSWORD = "password"
+        const val AGE = 10
     }
 }
