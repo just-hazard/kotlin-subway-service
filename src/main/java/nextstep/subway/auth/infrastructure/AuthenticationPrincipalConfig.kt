@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 
 @Configuration
-open class AuthenticationPrincipalConfig(private val authService: AuthService) : WebMvcConfigurer {
+class AuthenticationPrincipalConfig(private val authService: AuthService) : WebMvcConfigurer {
     override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
         argumentResolvers.add(createAuthenticationPrincipalArgumentResolver())
     }
 
     @Bean
-    open fun createAuthenticationPrincipalArgumentResolver(): AuthenticationPrincipalArgumentResolver {
+    fun createAuthenticationPrincipalArgumentResolver(): AuthenticationPrincipalArgumentResolver {
         return AuthenticationPrincipalArgumentResolver(authService)
     }
 }

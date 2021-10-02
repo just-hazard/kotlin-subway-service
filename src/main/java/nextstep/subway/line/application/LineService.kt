@@ -17,7 +17,7 @@ import java.util.*
 
 @Service
 @Transactional
-open class LineService(private val lineRepository: LineRepository, private val stationService: StationService) {
+class LineService(private val lineRepository: LineRepository, private val stationService: StationService) {
     fun saveLine(request: LineRequest): LineResponse {
         val upStation = stationService.findById(request.upStationId)
         val downStation = stationService.findById(request.downStationId)

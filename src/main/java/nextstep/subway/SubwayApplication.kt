@@ -9,7 +9,7 @@ import org.springframework.boot.SpringApplication
 @EnableJpaRepositories
 @EnableJpaAuditing
 @SpringBootApplication
-open class SubwayApplication {
+class SubwayApplication {
     fun main(args: Array<String>) {
         SpringApplication.run(SubwayApplication::class.java, *args)
     }

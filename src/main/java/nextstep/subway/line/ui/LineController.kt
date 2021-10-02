@@ -13,8 +13,8 @@ import java.net.URI
 @RequestMapping("/lines")
 class LineController(private val lineService: LineService) {
     @PostMapping
-    fun createLine(@RequestBody lineRequest: LineRequest?): ResponseEntity<*> {
-        val line = lineService.saveLine(lineRequest!!)
+    fun createLine(@RequestBody lineRequest: LineRequest): ResponseEntity<*> {
+        val line = lineService.saveLine(lineRequest)
         return ResponseEntity.created(URI.create("/lines/" + line.id)).body(line)
     }
 

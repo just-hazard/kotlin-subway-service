@@ -127,7 +127,6 @@ class LineAcceptanceTest : AcceptanceTest() {
     }
 
     companion object {
-        @JvmStatic
         fun 지하철_노선_등록되어_있음(params: LineRequest?): ExtractableResponse<Response> {
             return 지하철_노선_생성_요청(params)
         }
@@ -159,7 +158,6 @@ class LineAcceptanceTest : AcceptanceTest() {
                 .extract()
         }
 
-        @JvmStatic
         fun 지하철_노선_조회_요청(response: LineResponse): ExtractableResponse<Response> {
             return RestAssured
                 .given().log().all()
