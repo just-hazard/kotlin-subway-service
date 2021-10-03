@@ -15,7 +15,7 @@ class AcceptanceTest {
     @Autowired
     private val databaseCleanup: DatabaseCleanup? = null
     @BeforeEach
-    fun setUp() {
+    open fun setUp() {
         RestAssured.port = port
         databaseCleanup!!.execute()
     }
